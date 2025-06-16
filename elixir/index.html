@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elixir - Hat Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Added button styles */
+    .product-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .buy-now-btn {
+      background-color: red;
+      color: black;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      flex: 1;
+    }
+    
+    .buy-now-btn:hover {
+      background-color: #3e8e41;
+    }
+    
+    .add-to-cart-btn {
+      background-color: #2196F3;
+      color: black;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      flex: 1;
+    }
+    
+    .add-to-cart-btn:hover {
+      background-color: #0b7dda;
+    }
+    
+    .cart-counter {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ff5722;
+      color: purple;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .location-section {
+      background-color: #f8f9fa;
+      padding: 30px 20px;
+      margin: 40px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .location-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .location-info {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .location-title {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 28px;
+    }
+    
+    .location-details {
+      margin-bottom: 20px;
+    }
+    
+    .location-details p {
+      margin: 8px 0;
+      font-size: 16px;
+    }
+    
+    .opening-hours {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    }
+    
+    .opening-hours h3 {
+      margin-top: 0;
+      color: black;
+    }
+    
+    .opening-hours ul {
+      padding-left: 20px;
+    }
+    
+    .map-container {
+      flex: 1;
+      min-width: 300px;
+      height: 400px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+    
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .contact-btn {
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 30px auto;
+      display: block;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+    
+    .contact-btn:hover {
+      background-color: #1a252f;
+    }
+    
+    @media (max-width: 768px) {
+      .location-container {
+        flex-direction: column;
+      }
+      
+      .map-container {
+        width: 100%;
+      }
+    }
+    .admin-panel {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+    }
+    
+    .admin-panel h3 {
+      margin-top: 0;
+      color: #fff;
+      border-bottom: 1px solid #fff;
+      padding-bottom: 8px;
+    }
+    
+    .admin-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px 0;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+    
+    .admin-btn:hover {
+      background-color: #c0392b;
+    }
+    
+    .admin-input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Elixir</h1>
+    <p>Your Premium Hat Store</p>
+    <div id="cartCounter" class="cart-counter" style="display: none;">0</div>
+  </header>
+
+  <section class="products">
+    <div class="product">
+      <img src="img/product/hat1.jpg" alt="NEWERA CAP" />
+      <h2>NEWERA CAP</h2>
+      <p>$19.99</p>
+      <div class="product-buttons">
+        <button class="buy-now-btn" data-product="NEWERA CAP" data-price="19.99">Buy Now</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+    <div class="product">
+      <img src="img/product/hat2.jpg" alt="SUPREME CAP" />
+      <h2>SUPREME</h2>
+      <p>$24.99</p>
+      <div class="product-buttons">
+        <button class="buy-now-btn" data-product="SUPREME CAP" data-price="24.99">Buy Now</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+    <div class="product">
+      <img src="img/product/hat3.jpg" alt="NORTHFACE CAP" />
+      <h2>NORTH FACE</h2>
+      <p>$22.50</p>
+      <div class="product-buttons">
+        <button class="buy-now-btn" data-product="NORTHFACE CAP" data-price="22.50">Buy Now</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+    <div class="product">
+      <img src="img/product/CH.avif" alt="CHROME HEART CAP" />
+      <h2>CHROME HEART CAP</h2>
+      <p>$48.99</p>
+      <div class="product-buttons">
+        <button class="buy-now-btn" data-product="CHROME HEART CAP" data-price="48.99">Buy Now</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+    <div class="product">
+      <img src="img/product/car.webp" alt="CARHATT CAP" />
+      <h2>CARHATT CAP</h2>
+      <p>$19.99</p>
+      <div class="product-buttons">
+        <button class="buy-now-btn" data-product="CARHATT CAP" data-price="19.99">Buy Now</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+    <div class="product">
+      <img src="img/product/stus.webp" alt="STUSSY VTG CAP" />
+      <h2>STUSSY VTG CAP</h2>
+      <p>$19.99</p>
+      <div class="product-buttons">
+        <button class="buy-now-btn" data-product="STUSSY VTG CAP" data-price="19.99">Buy Now</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <button class="contact-btn">Contact Us</button>
+
+  <section class="location-section">
+    <div class="location-container">
+      <div class="location-info">
+        <h2 class="location-title">Visit Us in Pulau Pinang</h2>
+        <div class="location-details">
+          <p><strong>Address:</strong></p>
+          <p>123 Beach Street, Georgetown</p>
+          <p>10200 Pulau Pinang, Malaysia</p>
+          <p><strong>Phone:</strong> +604-123 4567</p>
+          <p><strong>Email:</strong> info@elixir-hats.com</p>
+        </div>
+        
+        <div class="opening-hours">
+          <h3>Opening Hours</h3>
+          <ul>
+            <li>Monday-Friday: 10:00 AM - 8:00 PM</li>
+            <li>Saturday: 10:00 AM - 9:00 PM</li>
+            <li>Sunday: 11:00 AM - 6:00 PM</li>
+            <li>Public Holidays: 11:00 AM - 5:00 PM</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="map-container">
+        <!-- Google Maps Embed -->
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.222979584717!2d100.33541731533115!3d5.414278996078317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304ac397ab1e1a6b%3A0x1ddad885a5e38f8e!2sBeach%20St%2C%20Georgetown%2C%20Penang!5e0!3m2!1sen!2smy!4v1621234567890!5m2!1sen!2smy" 
+          allowfullscreen="" 
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
+  <!-- Hidden VIP Section -->
+  <section class="cheat-section" id="cheat" hidden>
+    <h2>🎉 VIP Discount Unlocked!</h2>
+    <p>Use code <strong>ELX20</strong> at checkout for 20% OFF!</p>
+  </section>
+
+  <script>
+    let pressedKeys = [];
+    let cartCount = 0;
+    const cartCounter = document.getElementById('cartCounter');
+
+    document.addEventListener("keydown", (e) => {
+      pressedKeys.push(e.key.toUpperCase());
+
+      // Keep last 3 keys only
+      if (pressedKeys.length > 3) pressedKeys.shift();
+
+      if (pressedKeys.join('') === 'ELX') {
+        const cheatSection = document.getElementById("cheat");
+        cheatSection.hidden = false;
+        alert("🎉 Cheat code activated! VIP discount unlocked.");
+      }
+    });
+
+    // Buy Now functionality - redirects to payment page
+    document.querySelectorAll('.buy-now-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const productName = this.getAttribute('data-product');
+        const productPrice = this.getAttribute('data-price');
+        
+        // Store product in sessionStorage
+        sessionStorage.setItem('currentProduct', JSON.stringify({
+          name: productName,
+          price: productPrice
+        }));
+        
+        // Redirect to payment page
+        window.location.href = 'payment.html';
+      });
+    });
+
+    // Add to Cart functionality
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const product = this.closest('.product');
+        const productName = product.querySelector('h2').textContent;
+        
+        // Animation effect
+        this.textContent = 'Added!';
+        this.style.backgroundColor = '#4CAF50';
+        
+        setTimeout(() => {
+          this.textContent = 'Add to Cart';
+          this.style.backgroundColor = '#2196F3';
+        }, 1000);
+        
+        // Update cart counter
+        cartCount++;
+        cartCounter.textContent = cartCount;
+        cartCounter.style.display = 'flex';
+        
+        console.log('Added to cart: ${productName}')
+      });
+      });
+</script>
+<script>
+  function promptAdminLogin() {
+    const password = prompt("Enter Admin Password:");
+    if (password === "admin123") {
+      window.location.href = "admin.html";
+    } else if (password !== null) {
+      alert("Incorrect password!");
+    }
+  }
+</script>
+
+<!-- Admin Access Button -->
+<button onclick="promptAdminLogin()" style="
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 9999;
+">Admin</button>
+</body>
+</html>
